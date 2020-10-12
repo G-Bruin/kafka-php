@@ -554,13 +554,14 @@ class Process
         if (empty($consumerOffsets)) {
             $consumerOffsets = $assign->getFetchOffsets();
 
-            foreach ($consumerOffsets as $topic => $value) {
-                foreach ($value as $partId => $offset) {
-                    if (isset($lastOffsets[$topic][$partId]) && $lastOffsets[$topic][$partId] > $offset) {
-                        $consumerOffsets[$topic][$partId] = $offset + 1;
-                    }
-                }
-            }
+            // fix bug consumer重启，丢失message
+//            foreach ($consumerOffsets as $topic => $value) {
+//                foreach ($value as $partId => $offset) {
+//                    if (isset($lastOffsets[$topic][$partId]) && $lastOffsets[$topic][$partId] > $offset) {
+//                        $consumerOffsets[$topic][$partId] = $offset + 1;
+//                    }
+//                }
+//            }
 
             $assign->setConsumerOffsets($consumerOffsets);
             $assign->setCommitOffsets($assign->getFetchOffsets());
